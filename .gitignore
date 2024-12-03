@@ -1,32 +1,40 @@
-# Prerequisites
-*.d
+// Define the pin numbers for the MQ-135 sensors
+const int mq135BeforeFilterPin = A0; // Example pin, change as needed
+const int mq135AfterFilterPin = A1;  // Example pin, change as needed
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+void setup() {
+    Serial.begin(9600); // Start the Serial communication
+}
 
-# Precompiled Headers
-*.gch
-*.pch
+void loop() {
+    // Read the analog values from both MQ-135 sensors
+    int sensorValueBefore = analogRead(mq135BeforeFilterPin);
+    int sensorValueAfter = analogRead(mq135AfterFilterPin);
+    
+    // Convert the analog values to voltage (0-5V)
+    float voltageBefore = sensorValueBefore * (5.0 / 1023.0);
+    float voltageAfter = sensorValueAfter * (5.0 / 1023.0);
+    
+    // Print the results to the Serial Monitor
+    Serial.print("Before Filter - Sensor Value: ");
+    Serial.print(abs((sensorValueBefore - 130) / 3)); // Fixed the parentheses and added a closing parenthesis
+    Serial.println(" %");
+    
+    Serial.print("After Filter - Sensor Value: ");
+    Serial.print((sensorValueAfter - 90) /2.5); // Removed unnecessary parentheses
+    Serial.println(" %");
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+    // Uncomment below if you want to print the voltage values
+    /*
+    Serial.print("Before Filter Voltage: ");
+    Serial.print(voltageBefore);
+    Serial.println(" V");
 
-# Fortran module files
-*.mod
-*.smod
+    Serial.print("After Filter Voltage: ");
+    Serial.print(voltageAfter);
+    Serial.println(" V");
+    */
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+    // Add a delay for readability
+    delay(1000);
+}
